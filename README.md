@@ -14,10 +14,10 @@ openssl rand -hex 32
 docker compose up -d --build --wait
 ```
 
-- **Web 面板** `http://127.0.0.1:19090/ui/`。首次连接时使用后端地址 `http://127.0.0.1:19090`，密钥为 `MIHOMO_SECRET`。
-- **代理** `127.0.0.1:17890`，支持 HTTP 和 SOCKS5。两个端口默认只绑定 Docker 宿主机的回环地址。
+- **Web 面板** `http://127.0.0.1:9090/ui/`。首次连接时使用后端地址 `http://127.0.0.1:9090`，密钥为 `MIHOMO_SECRET`。
+- **代理** `127.0.0.1:7890`，支持 HTTP 和 SOCKS5。两个端口默认只绑定 Docker 宿主机的回环地址。
 
-通过 `docker compose logs --tail=50 mihomo` 查看启动和订阅刷新日志。代理可用 `curl --noproxy '' --proxy http://127.0.0.1:17890 https://example.com/` 验证。若需调整刷新间隔，可编辑 `compose.yaml` 中的 `SUB_INTERVAL`，单位为秒。
+通过 `docker compose logs --tail=50 mihomo` 查看启动和订阅刷新日志。代理可用 `curl --noproxy '' --proxy http://127.0.0.1:7890 https://example.com/` 验证。若需调整刷新间隔，可编辑 `compose.yaml` 中的 `SUB_INTERVAL`，单位为秒。
 
 ## GitHub Actions 构建
 
