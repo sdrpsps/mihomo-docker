@@ -43,8 +43,8 @@ def log(message):
 
 def secret_from_env():
     secret = os.environ.get("MIHOMO_SECRET", "")
-    if not re.fullmatch(r"[!-~]+", secret):
-        raise ConfigError("MIHOMO_SECRET must be nonempty ASCII without spaces or control characters")
+    if secret and not re.fullmatch(r"[!-~]+", secret):
+        raise ConfigError("MIHOMO_SECRET must use printable ASCII without spaces")
     return secret
 
 
@@ -146,9 +146,12 @@ def candidate(raw, secret, subscription):
 
 def api(secret, endpoint, payload=None, timeout=2):
     data = None if payload is None else json.dumps(payload).encode("utf-8")
+    headers = {"Content-Type": "application/json"}
+    if secret:
+        headers["Authorization"] = f"Bearer {secret}"
     request = urllib.request.Request(
         CONTROLLER + endpoint, data=data, method="GET" if data is None else "PUT",
-        headers={"Authorization": f"Bearer {secret}", "Content-Type": "application/json"},
+        headers=headers,
     )
     try:
         with CONTROLLER_OPENER.open(request, timeout=timeout) as response:

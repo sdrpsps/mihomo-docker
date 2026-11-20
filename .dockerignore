@@ -1,4 +1,3 @@
 *
 !Dockerfile
 !manager.py
-!fetch-upstream.sh

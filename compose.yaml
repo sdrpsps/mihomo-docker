@@ -1,9 +1,6 @@
 services:
   mihomo:
-    image: mihomo-docker:local
-    build:
-      context: .
-      no_cache: true
+    image: ghcr.io/sdrpsps/mihomo-docker:latest
     init: true
     restart: unless-stopped
     read_only: true
