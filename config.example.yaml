@@ -1,0 +1,5 @@
+mode: rule
+log-level: info
+ipv6: false
+rules:
+  - MATCH,DIRECT

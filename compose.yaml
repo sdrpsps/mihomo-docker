@@ -1,0 +1,24 @@
+services:
+  mihomo:
+    image: mihomo-docker:local
+    build:
+      context: .
+      no_cache: true
+    init: true
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp]
+    environment:
+      MIHOMO_SECRET: ""
+      SUB_URL: ""
+      SUB_INTERVAL: "21600"
+    ports:
+      - "127.0.0.1:19090:9090"
+      - "127.0.0.1:17890:7890"
+    volumes:
+      - data:/data
+
+volumes:
+  data:
