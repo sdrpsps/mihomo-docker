@@ -1,12 +1,19 @@
 # mihomo-docker
 
-填写订阅地址后，容器首次启动自动下载配置，之后每 6 小时刷新。新配置通过校验后热加载，并保存到 `data` 卷中的 `/data/config.yaml`。下载或校验失败时继续使用已有配置。
+填写订阅地址后，容器首次启动自动下载配置，之后每 6 小时刷新。新配置通过校验后热加载，并保存到 Compose 同目录的 `./data/config.yaml`。下载或校验失败时继续使用已有配置。
 
 ## 启动
 
 在 `compose.yaml` 的 `services.mihomo.environment` 下，将订阅地址填入 `SUB_URL`。保留值两侧的引号。订阅地址应返回完整的 Mihomo YAML。`MIHOMO_SECRET` 可以留空或省略，此时面板和控制 API 无需鉴权。需要鉴权时，可用 `openssl rand -hex 32` 生成密钥并填入 `MIHOMO_SECRET`。
 
-Compose 使用 `ghcr.io/sdrpsps/mihomo-docker:latest`。使用私有镜像时，先用具备 `read:packages` 权限的 GitHub 个人访问令牌登录 `ghcr.io`。首次启动或更新镜像时执行：
+Compose 使用 `ghcr.io/sdrpsps/mihomo-docker:latest`。首次启动前，在 `compose.yaml` 同目录创建 `data`，并让容器用户 `10001:10001` 可以读写。使用默认 Docker 用户映射的 Linux 主机可执行：
+
+```sh
+mkdir -m 0700 -p data
+sudo chown 10001:10001 data
+```
+
+已有部署可在停止容器后，将旧数据卷的内容复制到 `data`，并保留原有权限。首次启动或更新镜像时执行：
 
 ```sh
 docker compose pull
